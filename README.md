@@ -1,4 +1,5 @@
 # :credit_card: MyCards
+代码注释及优化：JinLe
 
 这是一款仿小米卡包的个人项目，用于个人学习交流分享
 
