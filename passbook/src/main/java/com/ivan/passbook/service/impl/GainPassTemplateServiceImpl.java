@@ -81,6 +81,7 @@ public class GainPassTemplateServiceImpl implements IGainPassTemplateService {
             return Response.failure("PassTemplate ValidTime Error!");
         }
 
+        //感觉下面两个应该写成一个事务
         // 减去优惠券的 limit
         if (passTemplate.getLimit()!=-1){
             List<Mutation> datas = new ArrayList<>();
@@ -134,13 +135,16 @@ public class GainPassTemplateServiceImpl implements IGainPassTemplateService {
                 log.error("Token not exist:{}",passTemplateId);
                 return false;
             }
+            //把这个token放在用户已经领过的token的文件里
             recordTokenToFile(merchantId,passTemplateId,token);
             put.addColumn(FAMILY_I,TOKEN,Bytes.toBytes(token));
         }else {
+            //token不存在
             put.addColumn(FAMILY_I,TOKEN,Bytes.toBytes("-1"));
         }
 
         put.addColumn(FAMILY_I,ASSIGNED_DATE,Bytes.toBytes(DateFormatUtils.ISO_DATE_FORMAT.format(new Date())));
+        //消费日期写-1
         put.addColumn(FAMILY_I,CON_DATE,Bytes.toBytes("-1"));
 
         datas.add(put);
