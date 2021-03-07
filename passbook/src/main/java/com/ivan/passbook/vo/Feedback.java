@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
+ * vo会在service里传递来传递去
  * <h1>用户评论表</h1>
  * @Author Ivan 16:08
  * @Description TODO
@@ -23,6 +24,7 @@ public class Feedback {
     private String type;
 
     /** PassTemplate RowKey, 如果是 app 类型的评论, 则没有 */
+    //外键关联的关系
     private String templateId;
 
     /** 评论内容 */

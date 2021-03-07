@@ -19,11 +19,12 @@ public class RowKeyGenUtil {
      * @param passTemplate {@link PassTemplate}
      * @return String RowKey
      */
-    public static  String genPassTemplateRowKey(PassTemplate passTemplate){
+    public static String genPassTemplateRowKey(PassTemplate passTemplate){
 
         //拼接id和title形成一个优惠券的唯一值
         String passInfo = String.valueOf(passTemplate.getId()+"_"+passTemplate.getTitle());
         //rowKey使用md5的目的是使得rowKey的分布尽量分散，充分利用HBase集群的负载均衡
+        //rowkey越分散，越容易分散在不同机器上，不然离得太近的都放在一台机器上了，不利于负载均衡
         String rowKey = DigestUtils.md5Hex(passInfo);
         log.info("GenPassTemplateRowKey:{},{}",passInfo,rowKey);
 
@@ -54,6 +55,7 @@ public class RowKeyGenUtil {
 
         //由于userId的后缀是随机的，这样生成的RowKey更加具有随机性
         // 并且最近时间的记录是靠前的
+        //不同用户的rowkey放在不同的机器，一个用户的许多评论尽量在同一台机器
         return new StringBuilder(String.valueOf(feedback.getUserId())).reverse().toString()+
                 (Long.MAX_VALUE-System.currentTimeMillis());
 

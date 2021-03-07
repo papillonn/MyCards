@@ -23,6 +23,7 @@ public class Pass {
     private String rowKey;
 
     /** PassTemplate 在 HBase 中的 RowKey */
+    //外键关系
     private String templateId;
 
     /** 优惠券 token, 有可能是 null, 则填充 -1 */

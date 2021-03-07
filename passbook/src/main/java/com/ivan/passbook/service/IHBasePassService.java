@@ -12,5 +12,6 @@ public interface IHBasePassService {
      * @param passTemplate {@link PassTemplate}
      * @return true/false
      */
+    //将商户投放的优惠券，放到hbase中
     boolean dropPassTemplateToHBase(PassTemplate passTemplate);
 }

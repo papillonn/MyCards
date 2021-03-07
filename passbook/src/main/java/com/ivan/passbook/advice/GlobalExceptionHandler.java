@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    //@ControllerAdvice spring扫描这个注解，加到容器里，做全局的异常处理
+    //controller异常的时候，会被ControllerAdvice捕获
 
     @ResponseBody
     @ExceptionHandler(value = Exception.class)

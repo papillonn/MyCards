@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class User {
 
+    //对应hbase的表结构
     /** 用户 id */
     private Long id;
 

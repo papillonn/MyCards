@@ -11,6 +11,8 @@ import org.apache.hadoop.hbase.util.Bytes;
  * @Author Ivan 16:33
  * @Description TODO
  */
+//尖括号中表示我们要转换的对象
+    //目的就是做一个hbase和object的映射
 public class UserRowMapper implements RowMapper<User> {
 
     // TODO: 2019/5/11 由于HBase中存储的都是字节数组
@@ -40,6 +42,7 @@ public class UserRowMapper implements RowMapper<User> {
         );
 
         return new User(
+                //getRow得到user的行数
                 Bytes.toLong(result.getRow()),baseInfo,otherInfo
         );
     }

@@ -35,6 +35,7 @@ public class ConsumerPassTemplate {
      * @param partition
      * @param topic
      */
+    //注解都是kafka特有的注解
     @KafkaListener(topics = {Constants.TEMPLATE_TOPIC})
     public void receive(@Payload String passTemplate,
                         @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,
@@ -42,6 +43,8 @@ public class ConsumerPassTemplate {
                         @Header(KafkaHeaders.RECEIVED_TOPIC) String topic){
         log.info("Consumer Receive PassTemplate:{}",passTemplate);
 
+        //从merchants拿到的优惠券对象，我们给序列化成passtemplate
+        //意思就是，如果两边的passtemplate不一样的话，反序列化的时候就会出错。
         PassTemplate pt;
         try {
             pt = JSON.parseObject(passTemplate,PassTemplate.class);

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class HBasePassServiceImpl implements IHBasePassService {
 
+    //使用HbaseTemplate来方便的操作hbase
     private final HbaseTemplate hbaseTemplate;
 
     @Autowired
@@ -37,9 +38,11 @@ public class HBasePassServiceImpl implements IHBasePassService {
             return false;
         }
 
+        //存的时候都要获取下rowkey
         String rowKey = RowKeyGenUtil.genPassTemplateRowKey(passTemplate);
 
         try {
+            //看下表里有没有这个rowkey，就是存没存过这个优惠券
             if (hbaseTemplate.getConnection().getTable(TableName.valueOf(Constants.PassTemplateTable.TABLE_NAME))
                     .exists(new Get(Bytes.toBytes(rowKey)))){
 
@@ -51,6 +54,7 @@ public class HBasePassServiceImpl implements IHBasePassService {
             return false;
         }
 
+        //使用put对象来写入hbase
         Put put = new Put(Bytes.toBytes(rowKey));
 
         //填充表内容
@@ -101,7 +105,7 @@ public class HBasePassServiceImpl implements IHBasePassService {
                 Bytes.toBytes(Constants.PassTemplateTable.END),
                 Bytes.toBytes(DateFormatUtils.ISO_DATE_FORMAT.format(passTemplate.getEnd()))
         );
-
+        //把put对象存到hbase
         hbaseTemplate.saveOrUpdate(Constants.PassTemplateTable.TABLE_NAME,put);
 
         return true;
