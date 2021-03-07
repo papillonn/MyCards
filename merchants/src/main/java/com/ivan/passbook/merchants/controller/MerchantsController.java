@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/merchants")
 public class MerchantsController {
 
-    @Autowired
-    private IMerchantsServ merchantsServ;
 
+    private IMerchantsServ merchantsServ;
+    //使用构造函数的方法注入
+    @Autowired
     public MerchantsController(IMerchantsServ merchantsServ) {
         this.merchantsServ=merchantsServ;
     }
@@ -28,6 +29,7 @@ public class MerchantsController {
     @ResponseBody
     @PostMapping("/create")
     public Response createMerchants(@RequestBody CreateMerchantsRequest request){
+        //@RequestBody 使前端传来的json对象可以序列化成request对象
         log.info("CreateMerchants : {}", JSON.toJSONString(request));
         return merchantsServ.createMerchants(request);
     }
@@ -50,7 +52,8 @@ public class MerchantsController {
     @ResponseBody
     @GetMapping("/{name}")
     public Response buildMerchantsByName(@PathVariable String name){
-        //商户根据自己入驻时返回的id，来查询自己的信息
+        //@PathVariable 路径变量，指得就是get的url上的
+        //商户根据自己入驻时返回的name，来查询自己的信息
         log.info("BuildMerchants :{}",name);
         return merchantsServ.buildMerchantsByName(name);
     }
