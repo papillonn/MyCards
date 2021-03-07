@@ -46,9 +46,11 @@ public class InventoryServiceImpl implements IInventoryService {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public Response getIventoryInfo(Long userId) throws Exception {
 
         Response allUserPass = userPassService.getUserAllPassInfo(userId);
+        //object强转
         List<PassInfo> passInfos = (List<PassInfo>) allUserPass.getData();
 
         List<PassTemplate> excludeObject = passInfos.stream().map(
@@ -56,6 +58,7 @@ public class InventoryServiceImpl implements IInventoryService {
         ).collect(Collectors.toList());
         List<String> excludeIds = new ArrayList<>();
 
+        //根据优惠券模板生成需要排除的id
         excludeObject.forEach(e->excludeIds.add(
                 RowKeyGenUtil.genPassTemplateRowKey(e)
         ));
@@ -83,7 +86,7 @@ public class InventoryServiceImpl implements IInventoryService {
                         new LongComparator(0L)
                 )
         );
-
+        //或者优惠券不存在上限
         filterList.addFilter(
                 new SingleColumnValueFilter(
                         Bytes.toBytes(Constants.PassTemplateTable.FAMILY_C),
@@ -102,11 +105,13 @@ public class InventoryServiceImpl implements IInventoryService {
 
         Date cur = new Date();
 
+        //过滤掉用户已经有的优惠券
         for (PassTemplate validTemplate:validTemplates){
             if (excludeIds.contains(RowKeyGenUtil.genPassTemplateRowKey(validTemplate))){
                 continue;
             }
 
+            //过期的也不要
             if (cur.getTime()>=validTemplate.getStart().getTime()
                 && cur.getTime()<=validTemplate.getEnd().getTime()){
                 availableTemplates.add(validTemplate);
@@ -128,6 +133,7 @@ public class InventoryServiceImpl implements IInventoryService {
                 PassTemplate::getId
         ).collect(Collectors.toList());
         List<Merchants> merchants = merchantsDao.findByIdIn(merchantsIds);
+        //merchants 变成 merchantsMap，下面查询用
         merchants.forEach(m->merchantsMap.put(m.getId(),m));
 
         List<PassTemplateInfo> result = new ArrayList<>();
@@ -142,7 +148,6 @@ public class InventoryServiceImpl implements IInventoryService {
             result.add(new PassTemplateInfo(passTemplate,mc));
         }
         return result;
-
 
     }
 }
