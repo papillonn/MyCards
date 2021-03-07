@@ -7,4 +7,5 @@ CREATE TABLE `merchants` (
   `address`  varchar(64) COLLATE utf8_bin NOT NULL COMMENT '商户地址',
   `is_audit` BOOLEAN NOT NULL COMMENT '是否通过审核',
   PRIMARY KEY (`id`)
+#      设置第一个id为17，具体没啥用
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET =utf8;

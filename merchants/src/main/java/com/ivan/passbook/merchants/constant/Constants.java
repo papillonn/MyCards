@@ -16,5 +16,5 @@ public class Constants {
     public static final String TOKEN_STRING = "token";
 
     /** token 的值 */
-    public static final String TOKEN = "ivan-passbook-merchants";
+    public static final String TOKEN = "papillon-passbook-merchants";
 }

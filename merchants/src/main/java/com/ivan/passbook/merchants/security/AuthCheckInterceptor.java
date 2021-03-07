@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Author Ivan 20:47
  * @Description TODO
  */
+//拦截器是一个springbean，需要注册到容器中，所以有了Component注解
 @Component
 public class AuthCheckInterceptor implements HandlerInterceptor {
     /**
@@ -36,6 +37,7 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
         if (!token.equals(Constants.TOKEN)){
             throw new Exception("Header 中 "+Constants.TOKEN_STRING+"错误！");
         }
+        //AccessContext里面有一个threadLocal，把这个token设置到这个threadlocal中，方便我们之后在代码中使用这个token
         AccessContext.setToken(token);
         return true;
     }
@@ -43,7 +45,7 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
     @Override
     public void postHandle(HttpServletRequest httpServletRequest,
                            HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-
+        //一般这个函数里面不做处理
     }
 
     /**
@@ -57,6 +59,7 @@ public class AuthCheckInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest,
                                 HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+        //清除token信息
         AccessContext.clearAccessKey();
 
     }
