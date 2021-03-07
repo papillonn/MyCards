@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.regex.Pattern;
+
 /**
  * @Author Ivan 20:00
  * @Description TODO
@@ -36,10 +38,15 @@ public class MerchantsController {
 
     @ResponseBody
     @GetMapping("/{id}")
-    public Response buildMerchantsById(@PathVariable Integer id){
+    public Response buildMerchantsById(@PathVariable String id){
         //商户根据自己入驻时返回的id，来查询自己的信息
         log.info("BuildMerchants :{}",id);
-        return merchantsServ.buildMerchantsById(id);
+        Pattern pattern = Pattern.compile("[0-9]*");
+        if(pattern.matcher(id).matches()){
+            return merchantsServ.buildMerchantsById(Integer.parseInt(id));
+        }else {
+            return merchantsServ.buildMerchantsByName(id);
+        }
     }
 
     @ResponseBody
@@ -49,12 +56,4 @@ public class MerchantsController {
         return merchantsServ.dropPassTemplate(template);
     }
 
-    @ResponseBody
-    @GetMapping("/{name}")
-    public Response buildMerchantsByName(@PathVariable String name){
-        //@PathVariable 路径变量，指得就是get的url上的
-        //商户根据自己入驻时返回的name，来查询自己的信息
-        log.info("BuildMerchants :{}",name);
-        return merchantsServ.buildMerchantsByName(name);
-    }
 }

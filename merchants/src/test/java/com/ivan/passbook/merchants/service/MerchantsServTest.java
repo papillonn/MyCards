@@ -1,7 +1,6 @@
 package com.ivan.passbook.merchants.service;
 
 import com.alibaba.fastjson.JSON;
-import com.ivan.passbook.merchants.dao.MerchantsDao;
 import com.ivan.passbook.merchants.vo.CreateMerchantsRequest;
 import com.ivan.passbook.merchants.vo.PassTemplate;
 import com.ivan.passbook.merchants.vo.Response;
