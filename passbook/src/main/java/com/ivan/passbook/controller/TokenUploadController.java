@@ -31,6 +31,7 @@ import java.util.stream.Stream;
 @Slf4j
 @Controller
 public class TokenUploadController {
+    //restcontroller 会返回json串，但是这里我们要返回前端页面，所以这里用的是controller
 
     private final StringRedisTemplate redisTemplate;
 
@@ -40,6 +41,8 @@ public class TokenUploadController {
     }
 
     // 68f975700756cfad57f0213162ab21d0
+    //跳转到upload.html这个页面
+    //路径 upload submit到/token 然后到uploadStatus这个页面
     @GetMapping("/upload")
     public String upload(){
         return "upload";
@@ -50,6 +53,8 @@ public class TokenUploadController {
                                   @RequestParam("passTemplateId")String passTemplateId,
                                   @RequestParam("file")MultipartFile file,
                                   RedirectAttributes redirectAttributes){
+        //redirectAttributes用于重定向
+        //message会在页面中被拿到
         if (null == passTemplateId || file.isEmpty()){
             redirectAttributes.addFlashAttribute("message",
                     "passTemplateId is null or file is empty");
@@ -81,6 +86,7 @@ public class TokenUploadController {
 
     }
 
+    //uploadStatus.html这个页面
     @GetMapping("/uploadStatus")
     public String uploadStatus(){
         return "uploadStatus";
