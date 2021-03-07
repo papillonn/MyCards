@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * <h1>投放的优惠券对象的定义</h1>
  * @Author Ivan 10:54
- * @Description TODO
+ * @Description 传递的对象封装在这里
  */
 @Data
 @NoArgsConstructor
@@ -51,7 +51,7 @@ public class PassTemplate {
      * @return
      */
     public ErrorCode validate(MerchantsDao merchantsDao){
-
+        //意思就是，商户发优惠券之前，要在表里注册过了，要是没注册过，就返回商户不存在这个错误。
         if (null == merchantsDao.findById(id)){
             return ErrorCode.MERCHANTS_NOT_EXIST;
         }

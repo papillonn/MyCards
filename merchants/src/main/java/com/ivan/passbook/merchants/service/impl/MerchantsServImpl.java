@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * <h1>商户服务接口实现</h1>
  *
- * @Author Ivan 14:47
+ * @Author
  * @Description TODO
  */
 @Slf4j
@@ -32,6 +32,7 @@ public class MerchantsServImpl implements IMerchantsServ {
     /** kafka 客户端 */
     private final KafkaTemplate<String,String> kafkaTemplate;
 
+    //下面是使用构造函数注入的方式
     @Autowired
     public MerchantsServImpl(MerchantsDao merchantsDao,KafkaTemplate<String,String> kafkaTemplate){
         this.merchantsDao=merchantsDao;
@@ -45,13 +46,14 @@ public class MerchantsServImpl implements IMerchantsServ {
     public Response createMerchants(CreateMerchantsRequest request) {
         Response response = new Response();
         CreateMerchantsResponse merchantsResponse = new CreateMerchantsResponse();
-
+        //判断商户的请求信息是否符合要求
         ErrorCode errorCode = request.validate(merchantsDao);
         if (errorCode != ErrorCode.SUCCESS){
             merchantsResponse.setId(-1);
             response.setErrorCode(errorCode.getCode());
             response.setErrorMsg(errorCode.getDesc());
         }else {
+            //没问题就保存，然后拿到id，返回给商户
             merchantsResponse.setId(merchantsDao.save(request.toMerchants()).getId());
         }
         response.setData(merchantsResponse);
@@ -76,6 +78,7 @@ public class MerchantsServImpl implements IMerchantsServ {
         return response;
     }
 
+    //商户投放优惠券
     @Override
     public Response dropPassTemplate(PassTemplate passTemplate) {
         Response response = new Response();
@@ -88,6 +91,7 @@ public class MerchantsServImpl implements IMerchantsServ {
         }else {
             String passBookTemplate = JSON.toJSONString(passTemplate);
             //将优惠券投放到kafka中
+            //三个参数 ， topic ， key， value
             kafkaTemplate.send(
                         Constants.TEMPLATE_TOPIC,
                         Constants.TEMPLATE_TOPIC,
@@ -95,8 +99,23 @@ public class MerchantsServImpl implements IMerchantsServ {
                 );
                 log.info("DropPassTemplate: {}", passBookTemplate);
 
+        }
+
+        return response;
+    }
+
+    @Override
+    public Response buildMerchantsByName(String name) {
+        Response response = new Response();
+        Merchants merchant = merchantsDao.findByName(name);
+
+        if (null == merchant){
+            response.setErrorCode(ErrorCode.MERCHANTS_NOT_EXIST.getCode());
+            response.setErrorMsg(ErrorCode.MERCHANTS_NOT_EXIST.getDesc());
 
         }
+
+        response.setData(merchant);
 
         return response;
     }

@@ -1,10 +1,11 @@
 spring:
   application:
-    name: IvanMerchants
+    name: PapillonMerchants
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/passbook?autoReconnect=true
+    url: jdbc:mysql://127.0.0.1:3306/passbook?autoReconnect=true&serverTimezone=GMT
     username: root
-    password: 123456
+    password: 513520jl
+    driver-class-name: com.mysql.cj.jdbc.Driver
   kafka:
     bootstrap-servers: 192.168.89.128:9092
     consumer:
@@ -17,7 +18,7 @@ server:
 
 logging:
   level: debug
-  file: ivan-merchats.log
+  file: papillon-merchats.log
 
 
 

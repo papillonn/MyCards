@@ -3,6 +3,7 @@ package com.ivan.passbook.merchants.vo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.context.annotation.Bean;
 
 /**
  * <h1>通用的响应对象</h1>

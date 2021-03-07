@@ -29,4 +29,11 @@ public interface IMerchantsServ {
      * @return {@link Response}
      */
     Response dropPassTemplate(PassTemplate passTemplate);
+
+    /**
+     * <h2>根据 id 构造商户信息</h2>
+     * @param name 商户 id
+     * @return {@link Response}
+     */
+    Response buildMerchantsByName(String name);
 }

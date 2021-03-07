@@ -35,6 +35,7 @@ public class MerchantsController {
     @ResponseBody
     @GetMapping("/{id}")
     public Response buildMerchantsById(@PathVariable Integer id){
+        //商户根据自己入驻时返回的id，来查询自己的信息
         log.info("BuildMerchants :{}",id);
         return merchantsServ.buildMerchantsById(id);
     }
@@ -44,5 +45,13 @@ public class MerchantsController {
     public Response dropPassTemplate(@RequestBody PassTemplate template){
         log.info("DropPassTemplate : {}",template);
         return merchantsServ.dropPassTemplate(template);
+    }
+
+    @ResponseBody
+    @GetMapping("/{name}")
+    public Response buildMerchantsByName(@PathVariable String name){
+        //商户根据自己入驻时返回的id，来查询自己的信息
+        log.info("BuildMerchants :{}",name);
+        return merchantsServ.buildMerchantsByName(name);
     }
 }

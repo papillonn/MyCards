@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * <h1>Merchants Dao 接口</h1>
  * @Author Ivan 21:23
- * @Description TODO
+ * @Description 直接就用的jpa，都不用自己写sql语句
  */
+//                                                    表名   ，主键类型
 public interface MerchantsDao extends JpaRepository<Merchants,Integer> {
 
     /**

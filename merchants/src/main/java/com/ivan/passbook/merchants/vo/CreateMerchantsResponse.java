@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 /**
  * <h1>创建商户响应对象</h1>
  * @Author Ivan 14:32
- * @Description TODO
+ * @Description 用到了空参构造函数
  */
 @Data
 @AllArgsConstructor

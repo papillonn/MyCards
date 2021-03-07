@@ -25,6 +25,7 @@ public class Merchants {
     private Integer id;
 
     /**商户 名称，需要是全局唯一的*/
+    //basic不加效果是一样的
     @Basic
     @Column(name = "name",unique = true,nullable = false)
     private String name;

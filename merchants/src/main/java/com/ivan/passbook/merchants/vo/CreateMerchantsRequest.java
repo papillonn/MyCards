@@ -6,15 +6,18 @@ import com.ivan.passbook.merchants.entity.Merchants;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 /**
+ * vo :在业务之间传递的对象 value object
  * <h2>创建商户请求对象</h2>
  * @Author Ivan 14:08
- * @Description TODO
+ * @Description 商户入驻
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Component
 public class CreateMerchantsRequest {
 
     /** 商户名称 */
@@ -38,6 +41,10 @@ public class CreateMerchantsRequest {
      * @return {@link ErrorCode}
      */
     public ErrorCode validate(MerchantsDao merchantsDao){
+
+        if(this.name == null || "".equals(this.name)){
+            return ErrorCode.MERCHANTS_NAME_ERROR;
+        }
 
         if (merchantsDao.findByName(this.name)!=null){
             return ErrorCode.DUPLICATE_NAME;
@@ -66,6 +73,7 @@ public class CreateMerchantsRequest {
      * <h2>将请求对象转换为商户对象</h2>
      *
      * @return {@link Merchants}
+     * 为了方便之后保存到数据库中，jpa的save（）
      */
     public Merchants toMerchants(){
 
@@ -78,9 +86,6 @@ public class CreateMerchantsRequest {
         merchants.setPhone(phone);
 
         return merchants;
-
-
-
 
     }
 }

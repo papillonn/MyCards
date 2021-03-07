@@ -1,6 +1,7 @@
 package com.ivan.passbook.merchants.service;
 
 import com.alibaba.fastjson.JSON;
+import com.ivan.passbook.merchants.dao.MerchantsDao;
 import com.ivan.passbook.merchants.vo.CreateMerchantsRequest;
 import com.ivan.passbook.merchants.vo.PassTemplate;
 import com.ivan.passbook.merchants.vo.Response;
@@ -25,13 +26,16 @@ public class MerchantsServTest {
 
     @Autowired
     private IMerchantsServ merchantsServ;
+    @Autowired
+    private CreateMerchantsRequest request;
+    //Autowired he component 可以一起使用
 
     @Test
     @Transactional
     public void testCreateMerchants(){
-
-        CreateMerchantsRequest request = new CreateMerchantsRequest();
-        request.setName("小U");
+    // Transactional注解是事务的意思
+        //加 Transactional之后，数据库就加不上数据了，他能识别test这个注解，就会回滚
+        request.setName("QQByte");
         request.setLogoUrl("www.baidu.com");
         request.setBusinessLicenseUrl("www.qq.com");
         request.setPhone("13355645684");
@@ -45,7 +49,7 @@ public class MerchantsServTest {
 
     @Test
     public void testBuildMerchants(){
-        Integer id = 1;
+        Integer id = 23;
         Response merchants = merchantsServ.buildMerchantsById(id);
 
         System.out.println(JSON.toJSONString(merchants));
@@ -55,7 +59,7 @@ public class MerchantsServTest {
     @Test
     public void testDropPassTemplate(){
         PassTemplate passTemplate = new PassTemplate();
-        passTemplate.setId(3);
+        passTemplate.setId(23);
         passTemplate.setTitle("晚餐券");
         passTemplate.setSummary("简介: SEU剧院cat");
         passTemplate.setDesc("详情：请点击查看");
