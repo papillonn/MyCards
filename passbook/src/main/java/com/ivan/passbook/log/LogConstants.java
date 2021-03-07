@@ -7,10 +7,11 @@ package com.ivan.passbook.log;
  */
 public class LogConstants {
 
+    //内部类
     public class ActionName{
 
         /** 用户查看优惠券信息 */
-        public static final  String USER_PASS_INFO = "UserPassInfo";
+        public static final String USER_PASS_INFO = "UserPassInfo";
 
         /** 用户查看已使用的优惠券信息 */
         public static final String USER_USED_PASS_INFO = "UserUsedPassInfo";

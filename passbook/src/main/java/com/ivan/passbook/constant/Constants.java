@@ -11,13 +11,13 @@ public class Constants {
     public static final String TEMPLATE_TOPIC = "merchants-template";
 
     /** token 文件存储目录 */
-    public static final String TOKEN_DIR = "C:\\Users\\Wei Yu\\Documents\\GitHub\\passbook\\tmp\\token\\";
+    public static final String TOKEN_DIR = "/tmp/token";
 
     /** 已使用的 token 文件后缀 */
     public static final String USED_TOKEN_SUFFIX = "_";
 
     /** 用户数的 redis key */
-    public static final String USED_COUNT_REDIS_KEY = "ivan-user-count";
+    public static final String USED_COUNT_REDIS_KEY = "papillon-user-count";
 
     /**
      * <h2> User HBase Table </h2>

@@ -39,7 +39,7 @@ public class MerchantsController {
     @ResponseBody
     @GetMapping("/{id}")
     public Response buildMerchantsById(@PathVariable String id){
-        //商户根据自己入驻时返回的id，来查询自己的信息
+        //商户根据自己入驻时返回的id，来查询自己的信息,中文字符暂时不行
         log.info("BuildMerchants :{}",id);
         Pattern pattern = Pattern.compile("[0-9]*");
         if(pattern.matcher(id).matches()){

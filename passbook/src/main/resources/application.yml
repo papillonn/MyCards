@@ -2,9 +2,10 @@ spring:
   application:
     name: Ivan-Passbook
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/passbook?autoReconnect=true
+    url: jdbc:mysql://127.0.0.1:3306/passbook?autoReconnect=true&serverTimezone=GMT
     username: root
-    password: 123456
+    password: 513520jl
+    driver-class-name: com.mysql.cj.jdbc.Driver
   kafka:
     bootstrap-servers: 192.168.89.128:9092
     consumer:
@@ -19,12 +20,12 @@ spring:
       nodeParent: /hbase
 
   redis:
-    host: 192.168.89.128
+    host: 127.0.0.1
     port: 6379
 server:
   port: 9528
 logging:
-  file: ivan-passbook.log
+  file: papillon-passbook.log
   level: debug
 
 
