@@ -5,6 +5,7 @@ import com.ivan.passbook.vo.User;
 
 /**
  * <h1>用户服务： 创建 User 服务 ，具体就是将注册的用户写入HBase </h1>
+ * 就是使用优惠券的用户
  */
 public interface IUserService {
 

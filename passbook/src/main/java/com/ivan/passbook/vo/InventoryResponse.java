@@ -20,6 +20,7 @@ public class InventoryResponse {
     private Long userId;
 
     /** 优惠券模板信息 */
+    //用户可以领取且没有过期的优惠券
     private List<PassTemplateInfo> passTemplateInfos;
 
 

@@ -77,11 +77,14 @@ public class FeedbckServiceImpl implements IFeedbackService {
     public Response getFeedback(Long userId) {
 
         byte[] reverseUserId = new StringBuilder(String.valueOf(userId)).reverse().toString().getBytes();
+        //扫描器
         Scan scan = new Scan();
+        //扫描器设置前缀过滤器，hbase提供了很多过滤器
         scan.setFilter(new PrefixFilter(reverseUserId));
 
+        //find会找很多记录，get指挥得到一条，而且get不到恶的时候会报错，但是find不到会返回空
         List<Feedback> feedbacks = hbaseTemplate.find(Constants.Feedback.TABLE_NAME,scan,new FeedbackRowMapper());
 
-        return new  Response(feedbacks);
+        return new Response(feedbacks);
     }
 }

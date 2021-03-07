@@ -53,7 +53,8 @@ public class UserServiceImpl implements IUserService {
         Long curCount = redisTemplate.opsForValue().increment(Constants.USED_COUNT_REDIS_KEY,1);
         Long userId = genUserId(curCount);
 
-        List<Mutation> datas = new ArrayList<Mutation>();
+        //Mutation是put和delete的子类
+        List<Mutation> datas = new ArrayList<>();
         Put put = new Put(Bytes.toBytes(userId));
 
         put.addColumn(FAMILY_B,NAME,Bytes.toBytes(user.getBaseInfo().getName()));
@@ -63,6 +64,7 @@ public class UserServiceImpl implements IUserService {
         put.addColumn(FAMILY_O,PHONE,Bytes.toBytes(user.getOtherInfo().getPhone()));
         put.addColumn(FAMILY_O,ADDRESS,Bytes.toBytes(user.getOtherInfo().getAddress()));
 
+        //为啥要放一个list里面
         datas.add(put);
 
         hbaseTemplate.saveOrUpdates(Constants.UserTable.TABLE_NAME, datas);
@@ -78,8 +80,9 @@ public class UserServiceImpl implements IUserService {
      * @param prefix 当前用户数
      * @return 用户 id
      */
+    //根据当前总用户数拼一个随机数来获取用户id
     private Long genUserId(Long prefix){
-
+        //5位
         String suffix = RandomStringUtils.randomNumeric(5);
         return Long.valueOf(prefix+suffix);
 

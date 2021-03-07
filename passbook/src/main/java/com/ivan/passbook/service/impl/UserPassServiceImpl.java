@@ -69,14 +69,17 @@ public class UserPassServiceImpl implements IUserPassService {
                 String.valueOf(pass.getUserId())).reverse().toString());
         Scan scan = new Scan();
         // 添加一些 过滤
+        //使用的是filter列表
         List<Filter> filters = new ArrayList<>();
         filters.add(new PrefixFilter(rowPrefix));
+        //判断TemplateId相等
         filters.add(new SingleColumnValueFilter(
                 Constants.PassTable.FAMILY_I.getBytes(),
                 Constants.PassTable.TEMPLATE_ID.getBytes(),
                 CompareFilter.CompareOp.EQUAL,
                 Bytes.toBytes(pass.getTemplateId())
         ));
+        //寻找未使用的优惠券
         filters.add(new SingleColumnValueFilter(
                 Constants.PassTable.FAMILY_I.getBytes(),
                 Constants.PassTable.CON_DATE.getBytes(),
@@ -87,6 +90,7 @@ public class UserPassServiceImpl implements IUserPassService {
         List<Pass> passes = hbaseTemplate.find(Constants.PassTable.TABLE_NAME,
                 scan, new PassRowMapper());
 
+        //里面应该只有一个元素
         if (null == passes || passes.size()!=1){
             log.error("UserUsePass Error: {}", JSON.toJSONString(pass));
             return Response.failure("UserUsePass Error");
@@ -98,6 +102,7 @@ public class UserPassServiceImpl implements IUserPassService {
         List<Mutation> datas = new ArrayList<>();
         Put put = new Put(passes.get(0).getRowKey().getBytes());
         put.addColumn(FAMILY_I,CON_DATE,
+                //添加优惠券使用的时间
                 Bytes.toBytes(DateFormatUtils.ISO_DATE_FORMAT.format(new Date())));
         datas.add(put);
 
@@ -119,9 +124,11 @@ public class UserPassServiceImpl implements IUserPassService {
         // 根据 UserId 构造行键前缀
         byte[] rowPrefix = Bytes.toBytes(new StringBuilder(String.valueOf(userId)).reverse().toString());
 
+        //一个比较器
         CompareFilter.CompareOp compareOp =
                 status == PassStatus.UNUSED ? CompareFilter.CompareOp.EQUAL : CompareFilter.CompareOp.NOT_EQUAL;
 
+        //一个扫描器
         Scan scan = new Scan();
 
         List<Filter> filters = new ArrayList<>();
@@ -129,10 +136,12 @@ public class UserPassServiceImpl implements IUserPassService {
         //1. 行键前缀过滤器，找到特定用户的优惠券，即根据前缀过滤
         filters.add(new PrefixFilter(rowPrefix));
         //2. 基于列单元值的过滤器，找到未使用的优惠券,即根据状态过滤
+        //如果获取ALL，就不设置过滤器
         if (status != PassStatus.ALL){
             //对HBase中单列的值进行过滤
             filters.add(
                     new SingleColumnValueFilter(
+                            //列族i的CON_DATE这列
                             Constants.PassTable.FAMILY_I.getBytes(),
                             Constants.PassTable.CON_DATE.getBytes(),
                             compareOp,
@@ -141,6 +150,7 @@ public class UserPassServiceImpl implements IUserPassService {
             );
         }
         scan.setFilter(new FilterList(filters));
+        //pass + passTemplate + Merchants = passInfo
 
         List<Pass> passes = hbaseTemplate.find(Constants.PassTable.TABLE_NAME, scan, new PassRowMapper());
         Map<String,PassTemplate> passTemplateMap = buildPassTemplateMap(passes);
@@ -170,6 +180,8 @@ public class UserPassServiceImpl implements IUserPassService {
 
     }
 
+    //下面是两个辅助map
+
     /**
      * <h2>通过获取的 passes 对象构造 Map </h2>
      * @return
@@ -192,10 +204,12 @@ public class UserPassServiceImpl implements IUserPassService {
         byte[] START = Bytes.toBytes(Constants.PassTemplateTable.START);
         byte[] END = Bytes.toBytes(Constants.PassTemplateTable.END);
 
+        //根据passes里的对象获取到所有的templateIds
         List<String> templateIds = passes.stream().map(
                 Pass::getTemplateId
         ).collect(Collectors.toList());
 
+        //一个存Get的list
         List<Get> templateGets = new ArrayList<>(templateIds.size());
         templateIds.forEach(t -> templateGets.add(new Get(Bytes.toBytes(t))));
 

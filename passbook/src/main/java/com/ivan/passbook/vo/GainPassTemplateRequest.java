@@ -18,5 +18,6 @@ public class GainPassTemplateRequest {
     private Long userId;
 
     /** PassTemplate 对象 */
+    //用户要领取的优惠券对象
     private PassTemplate passTemplate;
 }
